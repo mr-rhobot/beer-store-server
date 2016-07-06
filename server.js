@@ -5,6 +5,8 @@ var breweryDb = require('brewerydb-node');
 var brewDb = new breweryDb('b7db985c5f13c3e742a8bbf0a965976a');
 
 var app = express();
+
+app.set('port', (process.env.PORT || 4500));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -35,4 +37,6 @@ app.get('/api/beers', function (req, res) {
   });
 });
 
-app.listen('4500');
+app.listen(app.get('port'), function (req, res) {
+  console.log('Server started');
+});
