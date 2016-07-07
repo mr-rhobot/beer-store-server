@@ -18,23 +18,43 @@ app.use (function (req, res, next) {
 });
 
 app.get('/api/beers', function (req, res) {
-  brewDb.search.all({
-    q: 'corona'
-  }, function (err, beer) {
-    if (err) {
-      res.send({
-        error: 'Error' + err
-      })
-    } else {
-      var beerData = [];
-      for (var i=0; i<beer.length; i++) {
-        beerData.push(beer[i].id, beer[i].name)
+  if (req.query.beerName) {
+    brewDb.search.all({
+      q: req.query.beerName
+    }, function (err, beer) {
+      if (err) {
+        res.send({
+          error: 'Error' + err
+        })
+      } else {
+        // var beerData = [];
+        // for (var i=0; i<beer.length; i++) {
+        //   beerData.push(beer[i].id, beer[i].name)
+        // }
+        res.send({
+          beer: beer
+        });
       }
-      res.send({
-        beer: beer
-      });
-    }
-  });
+    });
+  } else {
+    brewDb.search.all({
+      q: 'corona'
+    }, function (err, beer) {
+      if (err) {
+        res.send({
+          error: 'Error' + err
+        })
+      } else {
+        // var beerData = [];
+        // for (var i=0; i<beer.length; i++) {
+        //   beerData.push(beer[i].id, beer[i].name)
+        // }
+        res.send({
+          beer: beer
+        });
+      }
+    });
+  }
 });
 
 app.listen(app.get('port'), function (req, res) {
